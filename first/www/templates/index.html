@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>Monday Night Indoor Football</title>
+    </head>
+    <body>
+      <h1>Welcome to the website for Monday Night Indoor Football</h1>
+      {% for player in players %}
+        <p>{{ player.firstname }} {{player.lastname}}</p>
+      {% endfor %}
+    </body>
+  </html>
