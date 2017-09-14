@@ -4,6 +4,7 @@ from django.db import models
 class Player(models.Model):
     firstname = models.CharField(max_length=30)
     lastname = models.CharField(max_length=30)
+    image = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return self.firstname + " " + self.lastname
@@ -18,7 +19,7 @@ class Match(models.Model):
 class Appearance(models.Model):
     match = models.ForeignKey(Match)
     player = models.ForeignKey(Player)
-    paid = models.BooleanField()
+    paid = models.BooleanField(default=True)
 
     def __str__(self):
         return str(self.match) + " - " + str(self.player)
