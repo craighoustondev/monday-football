@@ -1,0 +1,5 @@
+Django==1.11.4
+gunicorn==19.7.1
+pkg-resources==0.0.0
+pytz==2017.2
+whitenoise==3.3.0
