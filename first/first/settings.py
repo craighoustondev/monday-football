@@ -25,7 +25,7 @@ SECRET_KEY = '2wdmh8!ci&7zrvxvi_-u6k04n=5r%^!q19sux*+2p4-5zd@4pg'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mondayfootball.herokuapp.com']
 
 
 # Application definition
