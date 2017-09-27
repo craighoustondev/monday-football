@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
-    'social_django'
+    #'social_django'
 ]
 
 MIDDLEWARE = [
@@ -157,7 +157,7 @@ SOCIAL_AUTH_PIPELINE = (
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
-STATIC_URL = '/www/static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     BASE_DIR + '/www/static',
 )
