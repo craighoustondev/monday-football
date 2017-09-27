@@ -15,8 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from www import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('www.urls'))
+    url(r'^', include('www.urls')),
+    #url('', include('social.apps.django_app.urls', namespace='social')),
+    url('', include('social_django.urls', namespace='social')),
+    url(r'^logout/$', views.logout_view, name='logout'),
 ]
