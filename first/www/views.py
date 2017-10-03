@@ -30,6 +30,16 @@ def matches_edit(request, match_id):
         form = MatchForm(match_dict)
         return render(request, 'matches_edit.html', {'form':form})
 
+def matches_new(request):
+    if (request.method == 'POST'):
+        form = MatchForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+        return redirect(reverse('matches'))
+    else:
+        form = MatchForm()
+    return render(request, 'matches_edit.html', {'form':form})
+
 def logout_view(request):
     logout(request)
     return redirect(reverse('index'))

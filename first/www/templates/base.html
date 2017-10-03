@@ -7,11 +7,15 @@
 
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-      <link rel="stylesheet" href="../static/font-awesome-4.7.0/css/font-awesome.css">
-      <link rel="stylesheet" href="../static/bootstrap-social.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+      <link rel="stylesheet" href="{% static 'bootstrap/bootstrap-3.3.7-dist/css/bootstrap.min.css' %}" />
+      <link rel="stylesheet" href="{% static 'font-awesome-4.7.0/css/font-awesome.css' %}">
+      <link rel="stylesheet" href="{% static 'bootstrap-social.css' %}">
+      <link rel="stylesheet" href="{% static 'js/jquery/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+      <script src="{% static 'js/jquery/jquery-3.2.1.min.js' %}"></script>
+      <script src="{% static 'js/jquery/jquery-ui-1.12.1.custom/jquery-ui.js' %}"></script>
+      <script src="{% static 'bootstrap/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+
 
       <!-- <link rel="stylesheet" href="{% static 'normalize.css' %}"></link>
       <link rel="stylesheet" href="{% static 'main.css' %}"></link> -->
@@ -122,14 +126,15 @@
             <li><a href="/admin/">Admin</a></li>
             <li>
               {% if user.is_authenticated %}
-
-                <div id="user-info" class="text-center">>
+                <div id="user-info" class="text-center">
                   You are logged in as {{user.first_name}} {{user.last_name}}
-                  <a href="{% url 'logout' %}">Logout</a>
+                  <br>
+                  <a href="{% url 'logout' %}"
+                      class="btn btn-xs btn-danger">Logout
+                  </a>
               {% else %}
-
                   <a href="/login/google-oauth2/"
-                      class="btn btn-block btn-social btn-lg btn-google">
+                      class="btn btn-social btn-lg btn-google">
                     <span class="fa fa-google"></span> Sign in with Google
                   </a>
                 </div>
@@ -139,7 +144,6 @@
         </div>
       </div>
     </nav>
-
 
     {% block content %}
     {% endblock %}

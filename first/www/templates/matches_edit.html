@@ -1,9 +1,21 @@
 {% extends 'base.html' %}
 
+{% load staticfiles %}
+
+<link rel="stylesheet" href="{% static 'js/jquery/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<script src="{% static 'js/jquery/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'js/jquery/jquery-ui-1.12.1.custom/jquery-ui.js' %}"></script>
+
 {% block content %}
 
+<script>
+    $(function () {
+        $('#id_date').datepicker({ dateFormat: 'yy-mm-dd' });
+    });
+</script>
+
   <br><br><br><br><br><br>
-  <form action="." method="post"
+  <form action="." method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Submit" />
