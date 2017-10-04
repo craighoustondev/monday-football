@@ -1,0 +1,35 @@
+/* main.css */
+
+body {
+  background-color: #ddd;
+  font-size: 16px;
+  padding: 0;
+  margin: 0;
+}
+
+main {
+  padding 0;
+  margin: 0 auto;
+}
+
+section {
+  padding 0;
+  margin: 0;
+  min-width: 300px;
+  border-radius: 3px;
+  background-color: white;
+  text-align: center;
+  display: inline-block;
+  margin: 0 10px;
+}
+
+img {
+  border-radius: : 40px;
+}
+
+player-title{
+  font-size: 1em;
+  color: green;
+  padding 0;
+  margin: 0;
+}
