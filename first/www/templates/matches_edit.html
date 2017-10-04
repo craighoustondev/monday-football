@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load staticfiles %}
+{% load crispy_forms_tags %}
 
 <link rel="stylesheet" href="{% static 'js/jquery/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
 <script src="{% static 'js/jquery/jquery-3.2.1.min.js' %}"></script>
@@ -14,11 +15,19 @@
     });
 </script>
 
-  <br><br><br><br><br><br>
-  <form action="." method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit" />
-  </form>
+<div class="container text-center">
+  {% if 'edit' in request.path %}
+    <h3>Edit match:</h3>
+  {% endif %}
+  {% if 'new' in request.path %}
+    <h3>Create new match:</h3>
+  {% endif %}
+
+  <br>
+
+  {% csrf_token %}
+  {% crispy form form.helper %}
+
+</div>
 
 {% endblock %}

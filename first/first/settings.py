@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
-    'social_django'
+    'social_django',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -162,5 +163,10 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT , 'static'),
 )
 
+# Needs to be set to this for deployment to Heroku
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+# Needs to be set to this when running unit tests or they fail
 # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+# Django crispy forms for adding Bootstrap to forms
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

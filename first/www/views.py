@@ -4,6 +4,7 @@ from .forms import PlayerForm, MatchForm
 from django.forms.models import model_to_dict
 from django.core.urlresolvers import reverse
 from django.contrib.auth import logout
+from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
@@ -15,7 +16,7 @@ def matches(request):
         matches = Match.objects.all()
         return render(request, 'matches.html', {'matches':matches})
     else:
-        return redirect(reverse('index'))
+        return render(request, 'unauthenticated.html')
 
 def matches_edit(request, match_id):
     match = Match.objects.get(pk=match_id)
