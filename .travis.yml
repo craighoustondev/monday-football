@@ -3,4 +3,4 @@
     - 3.6
     - nightly
   script:
-    - python ./first/manage.py test
+    - python ./first/manage.py test www
