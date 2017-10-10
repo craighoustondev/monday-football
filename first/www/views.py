@@ -29,7 +29,8 @@ def matches_edit(request, match_id):
     else:
         match_dict = model_to_dict(match)
         form = MatchForm(match_dict)
-        return render(request, 'matches_edit.html', {'form':form})
+        players = Player.objects.all()
+        return render(request, 'matches_edit.html', {'form':form, 'players':players})
 
 def matches_new(request):
     if (request.method == 'POST'):
@@ -40,6 +41,10 @@ def matches_new(request):
     else:
         form = MatchForm()
     return render(request, 'matches_edit.html', {'form':form})
+
+def players(request):
+    players = Player.objects.all()
+    return render(request, 'players.html', {'players':players})
 
 def logout_view(request):
     logout(request)

@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^matches/(?P<match_id>\d+)/edit/$', views.matches_edit,
                                             name='matches_edit'),
     url(r'^matches/new/$', views.matches_new, name='matches_new'),
+    url(r'^players/$', views.players, name='players'),
 ]
