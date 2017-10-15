@@ -1,3 +1,5 @@
+/* https://codepen.io/retrofuturistic/pen/tlbHE/ */
+
 {% extends 'base.html' %}
 
 {% block content %}
@@ -121,13 +123,52 @@ function addDnDHandlers(elem) {
 var cols = document.querySelectorAll('#columns .column');
 [].forEach.call(cols, addDnDHandlers);
 
+var el = document.getElementById('items');
+var sortable = Sortable.create(el);
+
+// Simple list
+Sortable.create(simpleList, { /* options */ });
+
+// List with handle
+Sortable.create(listWithHandle, {
+  handle: '.glyphicon-move',
+  animation: 150
+});
 
 </script>
 
+<!-- Simple List -->
+<div id="simpleList" class="list-group">
+  <div class="list-group-item">This is <a href="http://rubaxa.github.io/Sortable/">Sortable</a></div>
+  <div class="list-group-item">It works with Bootstrap...</div>
+  <div class="list-group-item">...out of the box.</div>
+  <div class="list-group-item">It has support for touch devices.</div>
+  <div class="list-group-item">Just drag some elements around.</div>
+</div>
+
+<!-- List with handle -->
+<div id="listWithHandle" class="list-group">
+  <div class="list-group-item">
+    <span class="badge">14</span>
+    <span class="glyphicon glyphicon-move" aria-hidden="true"></span>
+    Drag me by the handle
+  </div>
+  <div class="list-group-item">
+    <span class="badge">2</span>
+    <span class="glyphicon glyphicon-move" aria-hidden="true"></span>
+    You can also select text
+  </div>
+  <div class="list-group-item">
+    <span class="badge">1</span>
+    <span class="glyphicon glyphicon-move" aria-hidden="true"></span>
+    Best of both worlds!
+  </div>
+</div>
+
 <div class="container text-center">
-  <ul id="columns">
+  <ul id="items">
     {% for player in players %}
-    <li class="column" draggable="true">
+    <li class="item">
       <header>{{ player.firstname }} {{player.lastname}}
       </header>
     </li>
