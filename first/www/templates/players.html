@@ -1,179 +1,47 @@
-/* https://codepen.io/retrofuturistic/pen/tlbHE/ */
-
 {% extends 'base.html' %}
 
 {% block content %}
 
-<style>
-[draggable] {
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
-  /* Required to make elements draggable in old WebKit */
-  -khtml-user-drag: element;
-  -webkit-user-drag: element;
-}
+<div class="container text-center">
+  <div class="col-sm-3">
+    <div id="playerList" class="list-group">
+      {% for player in players %}
+        <div class="list-group-item">
+          <span class="glyphicon glyphicon-move" aria-hidden="true"></span>
+          {{ player.firstname }} {{ player.lastname }}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
 
-#columns {
-  list-style-type: none;
-}
-
-.column {
-  width: 162px;
-  padding-bottom: 5px;
-  padding-top: 5px;
-  text-align: center;
-  cursor: move;
-}
-.column header {
-  height: 20px;
-  width: 150px;
-  color: black;
-  background-color: #ccc;
-  padding: 5px;
-  border-bottom: 1px solid #ddd;
-  border-radius: 10px;
-  border: 2px solid #666666;
-}
-
-.column.dragElem {
-  opacity: 0.4;
-}
-.column.over {
-  //border: 2px dashed #000;
-  border-top: 2px solid blue;
-}
-</style>
+  <div class="col-sm-3">
+    <div id="playerList2" class="list-group">
+      {% for player in players %}
+        <div class="list-group-item">
+          <span class="glyphicon glyphicon-move" aria-hidden="true"></span>
+          {{ player.firstname }} {{ player.lastname }}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
 
 <script type="application/javascript">
-var dragSrcEl = null;
 
-function handleDragStart(e) {
-  // Target (this) element is the source node.
-  dragSrcEl = this;
+  // List with handle
+  Sortable.create(playerList2, {
+    group: {name: "players", pull: true, put: true},
+    handle: '.glyphicon-move',
+    animation: 150
+  });
 
-  e.dataTransfer.effectAllowed = 'move';
-  e.dataTransfer.setData('text/html', this.outerHTML);
-
-  this.classList.add('dragElem');
-}
-function handleDragOver(e) {
-  if (e.preventDefault) {
-    e.preventDefault(); // Necessary. Allows us to drop.
-  }
-  this.classList.add('over');
-
-  e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
-
-  return false;
-}
-
-function handleDragEnter(e) {
-  // this / e.target is the current hover target.
-}
-
-function handleDragLeave(e) {
-  this.classList.remove('over');  // this / e.target is previous target element.
-}
-
-function handleDrop(e) {
-  // this/e.target is current target element.
-
-  if (e.stopPropagation) {
-    e.stopPropagation(); // Stops some browsers from redirecting.
-  }
-
-  // Don't do anything if dropping the same column we're dragging.
-  if (dragSrcEl != this) {
-    // Set the source column's HTML to the HTML of the column we dropped on.
-    //alert(this.outerHTML);
-    //dragSrcEl.innerHTML = this.innerHTML;
-    //this.innerHTML = e.dataTransfer.getData('text/html');
-    this.parentNode.removeChild(dragSrcEl);
-    var dropHTML = e.dataTransfer.getData('text/html');
-    this.insertAdjacentHTML('beforebegin',dropHTML);
-    var dropElem = this.previousSibling;
-    addDnDHandlers(dropElem);
-
-  }
-  this.classList.remove('over');
-  return false;
-}
-
-function handleDragEnd(e) {
-  // this/e.target is the source node.
-  this.classList.remove('over');
-
-  /*[].forEach.call(cols, function (col) {
-    col.classList.remove('over');
-  });*/
-}
-
-function addDnDHandlers(elem) {
-  elem.addEventListener('dragstart', handleDragStart, false);
-  elem.addEventListener('dragenter', handleDragEnter, false)
-  elem.addEventListener('dragover', handleDragOver, false);
-  elem.addEventListener('dragleave', handleDragLeave, false);
-  elem.addEventListener('drop', handleDrop, false);
-  elem.addEventListener('dragend', handleDragEnd, false);
-
-}
-
-var cols = document.querySelectorAll('#columns .column');
-[].forEach.call(cols, addDnDHandlers);
-
-var el = document.getElementById('items');
-var sortable = Sortable.create(el);
-
-// Simple list
-Sortable.create(simpleList, { /* options */ });
-
-// List with handle
-Sortable.create(listWithHandle, {
-  handle: '.glyphicon-move',
-  animation: 150
-});
+  // Player list with handle
+  Sortable.create(playerList, {
+    group: {name: "players", pull: true, put: true},
+    handle: '.glyphicon-move',
+    animation: 150
+  });
 
 </script>
-
-<!-- Simple List -->
-<div id="simpleList" class="list-group">
-  <div class="list-group-item">This is <a href="http://rubaxa.github.io/Sortable/">Sortable</a></div>
-  <div class="list-group-item">It works with Bootstrap...</div>
-  <div class="list-group-item">...out of the box.</div>
-  <div class="list-group-item">It has support for touch devices.</div>
-  <div class="list-group-item">Just drag some elements around.</div>
-</div>
-
-<!-- List with handle -->
-<div id="listWithHandle" class="list-group">
-  <div class="list-group-item">
-    <span class="badge">14</span>
-    <span class="glyphicon glyphicon-move" aria-hidden="true"></span>
-    Drag me by the handle
-  </div>
-  <div class="list-group-item">
-    <span class="badge">2</span>
-    <span class="glyphicon glyphicon-move" aria-hidden="true"></span>
-    You can also select text
-  </div>
-  <div class="list-group-item">
-    <span class="badge">1</span>
-    <span class="glyphicon glyphicon-move" aria-hidden="true"></span>
-    Best of both worlds!
-  </div>
-</div>
-
-<div class="container text-center">
-  <ul id="items">
-    {% for player in players %}
-    <li class="item">
-      <header>{{ player.firstname }} {{player.lastname}}
-      </header>
-    </li>
-    {% endfor %}
-  </ul>
-</div>
 
 {% endblock %}

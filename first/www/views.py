@@ -29,8 +29,11 @@ def matches_edit(request, match_id):
     else:
         match_dict = model_to_dict(match)
         form = MatchForm(match_dict)
-        players = Player.objects.all()
-        return render(request, 'matches_edit.html', {'form':form, 'players':players})
+        top_ten_players = Player.objects.all()[:10]
+        remaining_players = Player.objects.all()[10:]
+        return render(request, 'matches_edit.html', {'form':form,
+            'top_ten_players':top_ten_players,
+            'remaining_players':remaining_players})
 
 def matches_new(request):
     if (request.method == 'POST'):
@@ -40,7 +43,11 @@ def matches_new(request):
         return redirect(reverse('matches'))
     else:
         form = MatchForm()
-    return render(request, 'matches_edit.html', {'form':form})
+        top_ten_players = Player.objects.all()[:10]
+        remaining_players = Player.objects.all()[10:]
+    return render(request, 'matches_edit.html', {'form':form,
+        'top_ten_players':top_ten_players,
+        'remaining_players':remaining_players})
 
 def players(request):
     players = Player.objects.all()
