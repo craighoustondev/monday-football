@@ -9,14 +9,6 @@
 
 {% block content %}
 
-<script>
-  // JQuery datepicker
-  $(function () {
-      $('#id_date').datepicker({ dateFormat: 'yy-mm-dd' });
-  });
-
-</script>
-
 <div class="container text-center">
   {% if 'edit' in request.path %}
     <h3>Edit match:</h3>
@@ -33,9 +25,9 @@
   <div id="bin"></div>
   <div class="container text-center">
     <div class="col-sm-5">
-      <div id="playerList" class="list-group">
+      <div id="includedPlayerList" class="list-group">
         {% for player in top_ten_players %}
-          <div class="list-group-item list-group-item-success">
+          <div id="included-player" class="list-group-item list-group-item-success">
             <span class="fa fa-soccer-ball-o" aria-hidden="true"></span>
             {{ player.firstname }} {{ player.lastname }}
           </div>
@@ -44,9 +36,9 @@
     </div>
 
     <div class="col-sm-5">
-      <div id="playerList2" class="list-group">
+      <div id="excludedPlayerList" class="list-group">
         {% for player in remaining_players %}
-          <div class="list-group-item list-group-item-danger">
+          <div id="excluded-player" class="list-group-item list-group-item-danger">
             <span class="fa fa-soccer-ball-o" aria-hidden="true"></span>
             {{ player.firstname }} {{ player.lastname }}
           </div>
@@ -60,19 +52,47 @@
 <script type="application/javascript">
 
   // Player list with handle
-  Sortable.create(playerList2, {
+  Sortable.create(includedPlayerList, {
     group: {name: "players", pull: true, put: true},
     handle: '.fa-soccer-ball-o',
-    animation: 150
+    animation: 150,
+    onSort: function() {
+      $('#includedPlayerList').trigger('contentchanged');
+    }
   });
 
   // Player list with handle
-  Sortable.create(playerList, {
+  Sortable.create(excludedPlayerList, {
     group: {name: "players", pull: true, put: true},
     handle: '.fa-soccer-ball-o',
-    animation: 150
+    animation: 150,
+    onSort: function() {
+      $('#includedPlayerList').trigger('contentchanged');
+    }
   });
 
+</script>
+
+<script>
+  // JQuery datepicker
+  $(function () {
+      $('#id_date').datepicker({ dateFormat: 'yy-mm-dd' });
+  });
+
+  // JQuery to act upon changes to included players lists
+$('#includedPlayerList').bind('contentchanged', function() {
+  // Set all included player elements to green.
+  $('#includedPlayerList').find('div').each(function(){
+    $(this).removeClass().addClass('list-group-item list-group-item-success');
+  })
+  // Get the 11th element as we want to remove it
+  $eleventh = $( "#includedPlayerList div:nth-child(11)" ).detach();
+    $('#excludedPlayerList').prepend($eleventh);
+  // Set all excluded player elements to red.
+  $('#excludedPlayerList').find('div').each(function(){
+    $(this).removeClass().addClass('list-group-item list-group-item-danger');
+  })
+});
 </script>
 
 {% endblock %}
