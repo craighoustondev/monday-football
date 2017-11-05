@@ -29,7 +29,8 @@
         {% for player in top_ten_players %}
           <div id="included-player" class="list-group-item list-group-item-success">
             <span class="fa fa-soccer-ball-o" aria-hidden="true"></span>
-            {{ player.firstname }} {{ player.lastname }}
+            <div class="{{ player.id }}">{{ player.firstname }} {{ player.lastname }}
+            </div>
           </div>
         {% endfor %}
       </div>
@@ -40,7 +41,8 @@
         {% for player in remaining_players %}
           <div id="excluded-player" class="list-group-item list-group-item-danger">
             <span class="fa fa-soccer-ball-o" aria-hidden="true"></span>
-            {{ player.firstname }} {{ player.lastname }}
+            <div class="{{ player.id }}">{{ player.firstname }} {{ player.lastname }}
+            </div>
           </div>
         {% endfor %}
       </div>
@@ -80,18 +82,100 @@
   });
 
   // JQuery to act upon changes to included players lists
-$('#includedPlayerList').bind('contentchanged', function() {
-  // Set all included player elements to green.
-  $('#includedPlayerList').find('div').each(function(){
-    $(this).removeClass().addClass('list-group-item list-group-item-success');
+  $('#includedPlayerList').bind('contentchanged', function() {
+    // Set all included player elements to green.
+    $('#includedPlayerList').find('div').each(function(){
+      $(this).removeClass().addClass('list-group-item list-group-item-success');
+    })
+    // Get the 11th element as we want to detatch it and move it to the other list
+    $eleventh = $( "#includedPlayerList div:nth-child(11)" ).detach();
+      $('#excludedPlayerList').prepend($eleventh);
+    // Set all excluded player elements to red.
+    $('#excludedPlayerList').find('div').each(function(){
+      $(this).removeClass().addClass('list-group-item list-group-item-danger');
+    })
+
+    $includedPlayersIds = $("#included-player").prop("classList");
+  });
+
+  // Get all the ids of the players on the included list
+  $(function () {
+    var IDs = [];
+    $('.btn-primary').on('click', function(e){
+      e.PreventDefault;
+      $(".list-group-item-success").find('div').each(function(){
+        var id = $(this).attr('class');
+        IDs.push(id);
+
+        $.ajax({
+          url : "{% url 'submit_appearances' %}",
+          type : "POST",
+          data: { ids : IDs },
+        })
+      })
+    })
   })
-  // Get the 11th element as we want to remove it
-  $eleventh = $( "#includedPlayerList div:nth-child(11)" ).detach();
-    $('#excludedPlayerList').prepend($eleventh);
-  // Set all excluded player elements to red.
-  $('#excludedPlayerList').find('div').each(function(){
-    $(this).removeClass().addClass('list-group-item list-group-item-danger');
-  })
+
+  // AJAX code for submitting appearances
+  function submit_appearances() {
+
+  };
+
+  // Allows us to pass csrf token in Ajax requests:
+  // https://realpython.com/blog/python/django-and-ajax-form-submissions/
+  $(function() {
+
+    // This function gets cookie with a given name
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
+    /*
+    The functions below will create a header with csrftoken
+    */
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    function sameOrigin(url) {
+        // test that a given url is a same-origin URL
+        // url could be relative or scheme relative or absolute
+        var host = document.location.host; // host + port
+        var protocol = document.location.protocol;
+        var sr_origin = '//' + host;
+        var origin = protocol + sr_origin;
+        // Allow absolute or scheme relative URLs to same origin
+        return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+            (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+            // or any other URL that isn't scheme relative or absolute i.e relative.
+            !(/^(\/\/|http:|https:).*/.test(url));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+                // Send the token to same-origin, relative URLs only.
+                // Send the token only if the method warrants CSRF protection
+                // Using the CSRFToken value acquired earlier
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
 });
 </script>
 

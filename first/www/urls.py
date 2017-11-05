@@ -8,4 +8,6 @@ urlpatterns = [
                                             name='matches_edit'),
     url(r'^matches/new/$', views.matches_new, name='matches_new'),
     url(r'^players/$', views.players, name='players'),
+    url(r'^submit_appearances/$', views.submit_appearances,
+                                            name='submit_appearances'),
 ]

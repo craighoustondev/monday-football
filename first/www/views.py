@@ -53,6 +53,28 @@ def players(request):
     players = Player.objects.all()
     return render(request, 'players.html', {'players':players})
 
+def submit_appearances(request):
+    if (request.method == 'POST'):
+        ids = request.POST.get('ids')
+
+        for id in ids:
+            match = Match.objects.get(pk=1)
+            player = Player.objects.get(pk=id)
+            appearance = Appearance(match=1, player=player, paid=True)
+            appearance.save()
+
+            response_data['result'] = 'Create appearance successful!'
+
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
+    else:
+        return HttpResponse(
+            json.dumps({"nothing to see": "this isn't happening"}),
+            content_type="application/json"
+        )
+
 def logout_view(request):
     logout(request)
     return redirect(reverse('index'))
