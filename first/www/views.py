@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
-from .models import Player, Match
+from .models import Appearance, Match, Player
 from .forms import PlayerForm, MatchForm
 from django.forms.models import model_to_dict
 from django.core.urlresolvers import reverse
 from django.contrib.auth import logout
 from django.http import HttpResponse
+
+import json
 
 # Create your views here.
 def index(request):
@@ -55,25 +57,21 @@ def players(request):
 
 def submit_appearances(request):
     if (request.method == 'POST'):
-        ids = request.POST.get('ids')
+        ids = request.POST.getlist('playerIds[]')
 
         for id in ids:
             match = Match.objects.get(pk=1)
             player = Player.objects.get(pk=id)
-            appearance = Appearance(match=1, player=player, paid=True)
+            appearance = Appearance(match=match, player=player, paid=True)
             appearance.save()
 
-            response_data['result'] = 'Create appearance successful!'
-
         return HttpResponse(
-            json.dumps(response_data),
-            content_type="application/json"
-        )
+            json.dumps({"result": "Create appearance successful!"}),
+            content_type="application/json")
     else:
         return HttpResponse(
             json.dumps({"nothing to see": "this isn't happening"}),
-            content_type="application/json"
-        )
+            content_type="application/json")
 
 def logout_view(request):
     logout(request)
