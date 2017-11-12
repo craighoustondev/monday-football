@@ -26,7 +26,7 @@
   <div class="container text-center">
     <div class="col-sm-5">
       <div id="includedPlayerList" class="list-group">
-        {% for player in top_ten_players %}
+        {% for player in included_players %}
           <div id="included-player" class="list-group-item list-group-item-success">
             <span class="fa fa-soccer-ball-o" aria-hidden="true"></span>
             <div class="{{ player.id }}">{{ player.firstname }} {{ player.lastname }}
@@ -38,7 +38,7 @@
 
     <div class="col-sm-5">
       <div id="excludedPlayerList" class="list-group">
-        {% for player in remaining_players %}
+        {% for player in excluded_players %}
           <div id="excluded-player" class="list-group-item list-group-item-danger">
             <span class="fa fa-soccer-ball-o" aria-hidden="true"></span>
             <div class="{{ player.id }}">{{ player.firstname }} {{ player.lastname }}
@@ -84,14 +84,14 @@
   // JQuery to act upon changes to included players lists
   $('#includedPlayerList').bind('contentchanged', function() {
     // Set all included player elements to green.
-    $('#includedPlayerList').find('div').each(function(){
+    $('#includedPlayerList').find('.list-group-item').each(function(){
       $(this).removeClass().addClass('list-group-item list-group-item-success');
     })
     // Get the 11th element as we want to detatch it and move it to the other list
     $eleventh = $( "#includedPlayerList div:nth-child(11)" ).detach();
       $('#excludedPlayerList').prepend($eleventh);
     // Set all excluded player elements to red.
-    $('#excludedPlayerList').find('div').each(function(){
+    $('#excludedPlayerList').find('.list-group-item').each(function(){
       $(this).removeClass().addClass('list-group-item list-group-item-danger');
     })
 
@@ -100,38 +100,43 @@
 
   // Get all the ids of the players on the included list and send them
   // in an AJAX POST in order to create the relevant Appearances.
-  $(function () {
+  $('.form-horizontal').on('submit', function(event){
+
     var playerIds = [];
-    $('.btn-primary').on('click', function(e){
-      e.PreventDefault;
-      $(".list-group-item-success").find('div').each(function(){
-        var id = $(this).attr('class');
-        playerIds.push(id);
-      })
 
-      var numberOfPlayers = playerIds.length;
-      if (numberOfPlayers < 10)
-      {
-        var r = confirm("You have only specified " + numberOfPlayers +
-                  " included players. Are you sure you want to confirm?");
-        if (r == true) {
-
-        } else {
-          location.reload();
-        }
-      }
-
-      $.ajax({
-        method : "POST",
-        url : "{% url 'submit_appearances' %}",
-        data: {'playerIds': playerIds},
-        dataType : "json"
-        })
-        .done(function(msg) {
-          alert ("Data Saved: " + msg);
-        });
+    $(".list-group-item-success").find('div').each(function(){
+    	var id = $(this).attr('class');
+    	playerIds.push(parseInt(id));
     })
-  })
+
+    var numberOfPlayers = playerIds.length;
+    if (numberOfPlayers < 10)
+    {
+    	var r = confirm("You have only specified " + numberOfPlayers +
+    			  " included players. Are you sure you want to confirm?");
+    	if (r == true) {
+
+  	  } else {
+        event.preventDefault();
+  	    return;
+  	  }
+    }
+
+    var url = window.location.href;
+    var matchId = url.split("/")[4]
+
+    $.ajax({
+    	method : "POST",
+    	url : "{% url 'submit_appearances' %}",
+    	data: {'matchId': matchId,
+      'playerIds': playerIds},
+    	dataType : "json"
+  	})
+  	.done(function(msg) {
+  	  alert ("Data Saved: " + msg);
+  	});
+
+  });
 
   // Allows us to pass csrf token in Ajax requests:
   // https://realpython.com/blog/python/django-and-ajax-form-submissions/

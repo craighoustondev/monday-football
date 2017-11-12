@@ -16,6 +16,9 @@ class Match(models.Model):
     def __str__(self):
         return self.date.strftime("%d %B %Y")
 
+    class Meta:
+        ordering = ['date']
+
 class Appearance(models.Model):
     match = models.ForeignKey(Match)
     player = models.ForeignKey(Player)
@@ -23,3 +26,7 @@ class Appearance(models.Model):
 
     def __str__(self):
         return str(self.match) + " - " + str(self.player)
+
+    class Meta:
+        ordering = ['match', 'player']
+        unique_together = (('match', 'player'),)
