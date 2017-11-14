@@ -21,7 +21,7 @@
       <link rel="stylesheet" href="{% static 'main.css' %}"></link> -->
 
       <style>
-      
+
       </style>
 
     </head>
@@ -46,7 +46,7 @@
 
             <li><a href="{% url 'index' %}">Home</a></li>
             <li><a href="{% url 'matches' %}">Matches</a></li>
-            <li><a href="#blah">Blah</a></li>
+            <li><a href="/analysis">Analysis</a></li>
             <li><a href="/admin/">Admin</a></li>
             <li>
               {% if user.is_authenticated %}
@@ -68,7 +68,7 @@
         </div>
       </div>
     </nav>
-
+    <br><br><br>
     {% block content %}
     {% endblock %}
 

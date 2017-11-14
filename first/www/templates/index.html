@@ -49,9 +49,7 @@
           <img src="{{ player.image }}" class="img-circle player" style="width:50%">
           <!--<i class="fa fa-user-circle-o" style="font-size:100px"></i>-->
           <div class="overlay">
-            {% with appearances=player.appearance.all %}
-            <div class="text">{{ appearances|length }} appearances</div>
-            {% endwith %}
+            <div class="text">{{ player.num_appearances }} appearances</div>
           </div>
           <br>
           <p class="text-center">

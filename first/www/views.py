@@ -6,13 +6,14 @@ from django.forms.models import model_to_dict
 from django.core.urlresolvers import reverse
 from django.contrib.auth import logout
 from django.http import HttpResponse
-from django.db.models import Q
+from django.db.models import Count, Q
 
 import json
 
 # Create your views here.
 def index(request):
-    players = Player.objects.all()
+    players = Player.objects.all().annotate(
+                                        num_appearances=Count('appearance'))
     return render(request, 'index.html', {'players':players})
 
 def matches(request):
@@ -51,15 +52,29 @@ def matches_new(request):
         return redirect('/')
     else:
         form = MatchForm()
-        top_ten_players = Player.objects.all()[:10]
-        remaining_players = Player.objects.all()[10:]
+        included_players = Player.objects.all().annotate(
+                                        num_appearances=Count('appearance')
+                                        ).order_by('-num_appearances')[:10]
+        excluded_players = Player.objects.all().annotate(
+                                        num_appearances=Count('appearance')
+                                        ).order_by('-num_appearances')[10:]
     return render(request, 'matches_edit.html', {'form':form,
-        'top_ten_players':top_ten_players,
-        'remaining_players':remaining_players})
+        'included_players':included_players,
+        'excluded_players':excluded_players})
 
-def players(request):
-    players = Player.objects.all()
-    return render(request, 'players.html', {'players':players})
+def analysis(request):
+    players = Player.objects.all().annotate(
+                                    num_appearances=Count('appearance')
+                                    ).order_by('-num_appearances')
+    return render(request, 'analysis.html', {'players':players})
+    #return render(request, 'analysis.html')
+
+def player_appearance_chart(request):
+    players = Player.objects.all().annotate(
+                                    num_appearances=Count('appearance')
+                                    ).order_by('-num_appearances')
+    players_json = json.dumps(players.values())
+    return HttpResponse(players_json, content_type='application/javascript')
 
 def submit_appearances(request):
     if (request.method == 'POST'):
