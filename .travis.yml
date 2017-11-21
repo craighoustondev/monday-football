@@ -1,6 +1,10 @@
-  language: python
-  python:
-    - 3.6
-    - nightly
-  script:
-    - python ./first/manage.py test www
+language: python
+python:
+- 3.6
+- nightly
+script:
+- python ./first/manage.py test www
+deploy:
+  provider: heroku
+  api_key:
+    secure: eYhWPfcFts4puU/1IzcSEIAL1UlWCil4Ad3+5jKZKcVedEalI6vREhfRfVYItw3709hFNzsyPYsKAuqv55itVspK6n0/DdPAG9k+MMWi5oX+vifR1EWQPPN5fDYJY7150WU95+WO79RtpBQ6XW5NHW5g9uMX/XF3MMslkCIrE55D1IKG4R5JM8qZnM4BZlXgTry0nfL4QRyoyeHaclk3EHhi1srJVOPj6gtW7G3bybNsz/A211P0vEzoWBJwB9wRfsM5MLanbZ/JbGGPh8jLor/sK/ar+WhVn6A6WAaVeMP4jHhYdfGdsbO+jGWHRIu1W//hXR3gPDEd4ZNFQQJftLfCrWiOZ8BTTa1rqvr2Hy0XKY8jbyXF8qRe6dM0Nzvjq6XtHOMpO0tiTt8MxcETdn/OFfCUudJode20cYbyqikg9xCctMwLcp7d9h0crOM/z7ERvUeVlFl6UNU2u4kjluHmYQKkQ1/T6GdVyU16TvgpTkndMJBFuFChy5F7KhMled38A8giF4XbysaVKZeKoqQ1+wlXogDX5eBWS83Vdifsudb44+sT73INKR46v0lyLVORaMbC4M2N5FxWA+6ojrLw4KJgok/BtTvjeABEmouCf6kkySUSC7McoHnQsgNY3AjwGTXmOL583D7ijvi+NIFUe0Ju/fufsoTZFfgoThQ=
