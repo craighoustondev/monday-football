@@ -3,7 +3,7 @@ python:
 - 3.6
 - nightly
 script:
-- python ./first/manage.py test www
+- python ./mondayfootball/manage.py test www
 deploy:
   provider: heroku
   api_key:
